@@ -21,8 +21,18 @@ const getPost = {
   })
 };
 
+const createReco = {
+  params: Joi.object().keys({
+    postId: Joi.number().integer()
+  }),
+  body: Joi.object().keys({
+    content: Joi.string().required()
+  })
+};
+
 export default {
   createPost,
   getPosts,
-  getPost
+  getPost,
+  createReco
 };

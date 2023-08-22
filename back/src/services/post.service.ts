@@ -1,4 +1,4 @@
-import { Post, User } from '@prisma/client';
+import { Post, PostStatus, User } from '@prisma/client';
 import httpStatus from 'http-status';
 import prisma from '../client';
 import ApiError from '../utils/ApiError';
@@ -40,6 +40,17 @@ const queryPosts = async <Key extends keyof Post>(options: {
     select: {
       id: true,
       Categories: true,
+      reco: {
+        select: {
+          content: true,
+          createdBy: {
+            select: {
+              name: true,
+              id: true
+            }
+          }
+        }
+      },
       createdBy: {
         select: {
           name: true
@@ -67,6 +78,17 @@ const getPostById = async <Key extends keyof Post>(id: number): Promise<Pick<Pos
     select: {
       id: true,
       Categories: true,
+      reco: {
+        select: {
+          content: true,
+          createdBy: {
+            select: {
+              name: true,
+              id: true
+            }
+          }
+        }
+      },
       createdBy: {
         select: {
           name: true
@@ -78,8 +100,35 @@ const getPostById = async <Key extends keyof Post>(id: number): Promise<Pick<Pos
   }) as Promise<Pick<Post, Key> | null>;
 };
 
+const createReco = async (postId: number, content: string, user?: User): Promise<Post | null> => {
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  const [_, updatedPost] = await prisma.$transaction([
+    prisma.reco.create({
+      data: {
+        content,
+        userId: user.id,
+        parentPostId: postId
+      }
+    }),
+    prisma.post.update({
+      where: {
+        id: postId
+      },
+      data: {
+        status: PostStatus.ANSWERED
+      }
+    })
+  ]);
+
+  return updatedPost;
+};
+
 export default {
   createPost,
   queryPosts,
-  getPostById
+  getPostById,
+  createReco
 };

@@ -14,6 +14,6 @@ router
 router.route('/:postId').get(validate(postValidation.getPost), postController.getPostById);
 router
   .route('/:postId/reco')
-  .post(auth('reco'), validate(postValidation.getPost), postController.getPostById);
+  .post(auth('reco'), validate(postValidation.createReco), postController.createReco);
 
 export default router;

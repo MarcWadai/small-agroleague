@@ -18,6 +18,7 @@ model User {
   updatedAt       DateTime? @updatedAt
   Token           Token[]
   Post            Post[]
+  Reco            Reco[]
 }
 
 model Post {
@@ -35,6 +36,8 @@ model Post {
 model Reco {
   id              Int      @id @default(autoincrement())
   contentFormat   ContentFormat @default(TEXT)
+  createdBy       User @relation(fields: [userId], references: [id])
+  userId          Int
   content         String
   parentPost      Post @relation(fields: [parentPostId], references: [id])
   parentPostId    Int @unique

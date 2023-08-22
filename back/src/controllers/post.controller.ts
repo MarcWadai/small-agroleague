@@ -25,8 +25,19 @@ const getPostById = catchAsync(async (req: Request, res: Response) => {
   }
   res.send(post);
 });
+
+const createReco = catchAsync(async (req: Request, res: Response) => {
+  const { content } = req.body;
+  const post = await postService.createReco(Number(req.params.postId), content, req.user as User);
+  if (!post) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  res.send(post);
+});
+
 export default {
   createPost,
   queryPosts,
-  getPostById
+  getPostById,
+  createReco
 };
