@@ -14,9 +14,12 @@ import Config from "../../config"
 import { GeneralApiProblem, getGeneralApiProblem } from "./apiProblem" // @demo remove-current-line
 import type {
   ApiConfig,
-  ApiFeedResponse, // @demo remove-current-line
+  Post,
+  AuthUser
 } from "./api.types"
-import type { EpisodeSnapshotIn } from "../../models/Episode" // @demo remove-current-line
+import type { PostSnapshotIn } from "../../models/Post" // @demo remove-current-line
+import { AuthenticationStoreSnapshotIn } from "app/models/AuthenticationStore"
+
 
 /**
  * Configuring the apisauce instance.
@@ -47,23 +50,14 @@ export class Api {
       },
     })
   }
-    this.apisauce2 = create({
-      baseURL: this.config.url,
-      timeout: this.config.timeout,
-      headers: {
-        Accept: "application/json",
-      },
-    })
 
-  // @demo remove-block-start
-  /**
-   * Gets a list of recent React Native Radio episodes.
-   */
-  async getEpisodes(): Promise<{ kind: "ok"; episodes: EpisodeSnapshotIn[] } | GeneralApiProblem> {
+
+  async postLogin(email: string, password: string): Promise<{ kind: "ok"; authUser: AuthenticationStoreSnapshotIn } | GeneralApiProblem> {
     // make the api call
-    const response: ApiResponse<ApiFeedResponse> = await this.apisauce.get(
-      `api.json?rss_url=https%3A%2F%2Ffeeds.simplecast.com%2FhEI_f9Dx`,
-    )
+    const response: ApiResponse<AuthUser> = await this.apisauce.post('/auth/login', {
+      email,
+      password
+    })
 
     // the typical ways to die when calling an api
     if (!response.ok) {
@@ -74,13 +68,15 @@ export class Api {
     // transform the data into the format we are expecting
     try {
       const rawData = response.data
-
       // This is where we transform the data into the shape we expect for our MST model.
-      const episodes: EpisodeSnapshotIn[] = rawData.items.map((raw) => ({
-        ...raw,
-      }))
-
-      return { kind: "ok", episodes }
+      const authUser: AuthenticationStoreSnapshotIn = {
+        authEmail: rawData.user.email,
+        authToken: rawData.tokens.access.token,
+        name: rawData.user.name,
+        user: rawData.user
+      }
+      console.log('authUser', authUser)
+      return { kind: "ok", authUser }
     } catch (e) {
       if (__DEV__) {
         console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
@@ -88,12 +84,11 @@ export class Api {
       return { kind: "bad-data" }
     }
   }
-  
-  async getPosts(): Promise<{ kind: "ok"; episodes: EpisodeSnapshotIn[] } | GeneralApiProblem> {
+
+
+  async getPosts(): Promise<{ kind: "ok"; posts: PostSnapshotIn[] } | GeneralApiProblem> {
     // make the api call
-    const response: ApiResponse<ApiFeedResponse> = await this.apisauce.get(
-      `api.json?rss_url=https%3A%2F%2Ffeeds.simplecast.com%2FhEI_f9Dx`,
-    )
+    const response: ApiResponse<Post[]> = await this.apisauce.get('/posts')
 
     // the typical ways to die when calling an api
     if (!response.ok) {
@@ -104,13 +99,46 @@ export class Api {
     // transform the data into the format we are expecting
     try {
       const rawData = response.data
-
+      console.log('rawData', rawData)
       // This is where we transform the data into the shape we expect for our MST model.
-      const episodes: EpisodeSnapshotIn[] = rawData.items.map((raw) => ({
-        ...raw,
+      const posts: PostSnapshotIn[] = rawData.map((raw) => ({
+        id: raw.id,
+        question: raw.question,
+        categories: raw.Categories,
+        createdAt: raw.createdAt,
+        createdBy: raw.createdBy,
+        reco: raw.reco
       }))
 
-      return { kind: "ok", episodes }
+      return { kind: "ok", posts }
+    } catch (e) {
+      if (__DEV__) {
+        console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
+      }
+      return { kind: "bad-data" }
+    }
+  }
+
+  async getMyPosts(userId: number): Promise<{ kind: "ok"; posts: PostSnapshotIn[] } | GeneralApiProblem> {
+    // make the api call
+    const response: ApiResponse<Post[]> = await this.apisauce.get(`/posts/${userId}`)
+
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+
+    // transform the data into the format we are expecting
+    try {
+      const rawData = response.data
+      console.log('rawData', rawData)
+      // This is where we transform the data into the shape we expect for our MST model.
+      const posts: PostSnapshotIn[] = rawData.map((raw) => ({
+        ...raw,
+      })) as unknown as PostSnapshotIn[]
+
+      return { kind: "ok", posts }
     } catch (e) {
       if (__DEV__) {
         console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
@@ -120,6 +148,5 @@ export class Api {
   }
   // @demo remove-block-end
 }
-
 // Singleton instance of the API for convenience
 export const api = new Api()

@@ -35,10 +35,8 @@ import { colors } from "app/theme"
  *   https://reactnavigation.org/docs/typescript/#organizing-types
  */
 export type AppStackParamList = {
-  Login: undefined // @demo remove-current-line
-  Home: NavigatorScreenParams<HomeTabParamList> // @demo remove-current-line
-  // 🔥 Your screens go here
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  Login: undefined
+  Home: NavigatorScreenParams<HomeTabParamList> 
 }
 
 /**

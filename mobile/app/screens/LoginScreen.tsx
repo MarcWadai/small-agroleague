@@ -16,15 +16,15 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [attemptsCount, setAttemptsCount] = useState(0)
   const {
-    authenticationStore: { authEmail, setAuthEmail, setAuthToken, validationError },
+    authenticationStore: { authEmail, setAuthEmail, validationError, sendLogin },
   } = useStores()
 
   useEffect(() => {
     // Here is where you could fetch credentials from keychain or storage
     // and pre-fill the form fields.
-    setAuthEmail("ignite@infinite.red")
-    setAuthPassword("ign1teIsAwes0m3")
-
+    setAuthEmail("jeammichou@protonmail.com")
+    setAuthPassword("password1")
+    
     // Return a "cleanup" function that React will run when the component unmounts
     return () => {
       setAuthPassword("")
@@ -34,7 +34,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
 
   const error = isSubmitted ? validationError : ""
 
-  function login() {
+  async function login() {
     setIsSubmitted(true)
     setAttemptsCount(attemptsCount + 1)
 
@@ -42,12 +42,14 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
 
     // Make a request to your server to get an authentication token.
     // If successful, reset the fields and set the token.
-    setIsSubmitted(false)
-    setAuthPassword("")
-    setAuthEmail("")
-
-    // We'll mock this with a fake token.
-    setAuthToken(String(Date.now()))
+    try {
+      await sendLogin(authEmail, authPassword)
+      setIsSubmitted(false)
+      setAuthPassword("")
+      setAuthEmail("")
+    } catch(err) {
+      console.log(err)
+    }
   }
 
   const PasswordRightAccessory = useMemo(

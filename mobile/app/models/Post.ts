@@ -1,7 +1,5 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
-import { withSetPropAction } from "./helpers/withSetPropAction"
-import { formatDate } from "../utils/formatDate"
-import { translate } from "../i18n"
+import { UserModel } from './User'
 
 const Category = types.model("Category", {
   name: types.string,
@@ -11,69 +9,26 @@ const Category = types.model("Category", {
 
 const Reco = types.model("Reco", {
   id: types.integer,
-  content: types.string
+  content: types.string,
+  createdBy: types.maybe(UserModel)
 })
 
 /**
- * This represents an episode of React Native Radio.
+ * This represents an Post of React Native Radio.
  */
 export const PostModel = types
   .model("Post")
   .props({
-    id: types.identifier,
+    id: types.identifierNumber,
     question: "",
-    categories: types.array(Category), // Ex: 2022-08-12 21:05:36
-    createdAt: "",
-    reco: Reco
-  })
-  .actions(withSetPropAction)
-  .views((episode) => ({
-    get parsedTitleAndSubtitle() {
-      const defaultValue = { title: episode.title?.trim(), subtitle: "" }
+    categories: types.array(Category),
+    createdAt: types.string,
+    createdBy: UserModel,
+    reco: types.maybe(Reco)
+  });
 
-      if (!defaultValue.title) return defaultValue
-
-      const titleMatches = defaultValue.title.match(/^(RNR.*\d)(?: - )(.*$)/)
-
-      if (!titleMatches || titleMatches.length !== 3) return defaultValue
-
-      return { title: titleMatches[1], subtitle: titleMatches[2] }
-    },
-    get datePublished() {
-      try {
-        const formatted = formatDate(episode.pubDate)
-        return {
-          textLabel: formatted,
-          accessibilityLabel: translate("demoPodcastListScreen.accessibility.publishLabel", {
-            date: formatted,
-          }),
-        }
-      } catch (error) {
-        return { textLabel: "", accessibilityLabel: "" }
-      }
-    },
-    get duration() {
-      const seconds = Number(episode.enclosure.duration)
-      const h = Math.floor(seconds / 3600)
-      const m = Math.floor((seconds % 3600) / 60)
-      const s = Math.floor((seconds % 3600) % 60)
-
-      const hDisplay = h > 0 ? `${h}:` : ""
-      const mDisplay = m > 0 ? `${m}:` : ""
-      const sDisplay = s > 0 ? s : ""
-      return {
-        textLabel: hDisplay + mDisplay + sDisplay,
-        accessibilityLabel: translate("demoPodcastListScreen.accessibility.durationLabel", {
-          hours: h,
-          minutes: m,
-          seconds: s,
-        }),
-      }
-    },
-  }))
-
-export interface Episode extends Instance<typeof EpisodeModel> {}
-export interface EpisodeSnapshotOut extends SnapshotOut<typeof EpisodeModel> {}
-export interface EpisodeSnapshotIn extends SnapshotIn<typeof EpisodeModel> {}
+export interface Post extends Instance<typeof PostModel> {}
+export interface PostSnapshotOut extends SnapshotOut<typeof PostModel> {}
+export interface PostSnapshotIn extends SnapshotIn<typeof PostModel> {}
 
 // @demo remove-file

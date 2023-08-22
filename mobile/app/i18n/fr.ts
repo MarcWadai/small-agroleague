@@ -1,4 +1,4 @@
-const en = {
+const fr = {
   common: {
     ok: "OK!",
     cancel: "Cancel",
@@ -73,5 +73,5 @@ const en = {
   // @demo remove-block-end
 }
 
-export default en
-export type Translations = typeof en
+export default fr
+export type Translations = typeof fr

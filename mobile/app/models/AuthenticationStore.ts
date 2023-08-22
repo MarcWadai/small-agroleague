@@ -1,11 +1,15 @@
-import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { UserModel } from "./User"
+import { api } from "app/services/api"
+import { withSetPropAction } from "./helpers/withSetPropAction"
 
 export const AuthenticationStoreModel = types
   .model("AuthenticationStore")
   .props({
     authToken: types.maybe(types.string),
     authEmail: "",
-    name: ""
+    name: "",
+    user: types.maybe(UserModel)
   })
   .views((store) => ({
     get isAuthenticated() {
@@ -19,6 +23,7 @@ export const AuthenticationStoreModel = types
       return ""
     },
   }))
+  .actions(withSetPropAction)
   .actions((store) => ({
     setAuthToken(value?: string) {
       store.authToken = value
@@ -29,14 +34,27 @@ export const AuthenticationStoreModel = types
     setAuthName(value: string) {
       store.authEmail = value
     },
+    async sendLogin(email: string, password: string) {
+      const response = await api.postLogin(email, password)
+      if (response.kind === "ok") {
+        store.setProp('authToken', response.authUser.authToken)
+        store.setProp('authEmail', response.authUser.authEmail)
+        store.setProp('name', response.authUser.name)
+        store.setProp('user', response.authUser.user)
+      } else {
+        console.tron.error(`Error fetching episodes: ${JSON.stringify(response)}`, [])
+      }
+    },
     logout() {
       store.authToken = undefined
       store.authEmail = ""
       store.name = ""
+      store.user = undefined
     },
   }))
 
 export interface AuthenticationStore extends Instance<typeof AuthenticationStoreModel> {}
 export interface AuthenticationStoreSnapshot extends SnapshotOut<typeof AuthenticationStoreModel> {}
+export interface AuthenticationStoreSnapshotIn extends SnapshotIn<typeof AuthenticationStoreModel> {}
 
 // @demo remove-file

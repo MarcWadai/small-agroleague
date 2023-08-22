@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite"
-import React, { FC, useEffect, useMemo } from "react"
+import React, { FC, useEffect, useMemo, ReactElement } from "react"
 import {
   FlatList,
   Image,
@@ -11,22 +11,16 @@ import {
 import { Button, Card, Screen, Text } from "../components"
 import { isRTL, translate } from "../i18n"
 import { useStores } from "../models"
-import { Episode } from "../models/Episode"
+import { Post } from "../models/Post"
 import { HomeTabScreenProps } from "../navigators/HomeNavigator"
 import { colors, spacing } from "../theme"
 import { delay } from "../utils/delay"
-import { openLinkInBrowser } from "../utils/openLinkInBrowser"
 
 const ICON_SIZE = 14
 
-const rnrImage1 = require("../../assets/images/rnr-image-1.png")
-const rnrImage2 = require("../../assets/images/rnr-image-2.png")
-const rnrImage3 = require("../../assets/images/rnr-image-3.png")
-const rnrImages = [rnrImage1, rnrImage2, rnrImage3]
-
-export const DemoPodcastListScreen: FC<HomeTabScreenProps<"DemoPodcastList">> = observer(
-  function DemoPodcastListScreen(_props) {
-    const { episodeStore } = useStores()
+export const MyListScreen: FC<HomeTabScreenProps<"MyList">> = observer(
+  function MyListScreen(_props) {
+    const { postStore } = useStores()
 
     const [refreshing, setRefreshing] = React.useState(false)
     const [isLoading, setIsLoading] = React.useState(false)
@@ -35,15 +29,15 @@ export const DemoPodcastListScreen: FC<HomeTabScreenProps<"DemoPodcastList">> = 
     useEffect(() => {
       ;(async function load() {
         setIsLoading(true)
-        await episodeStore.fetchEpisodes()
+        await postStore.fetchMyPosts()
         setIsLoading(false)
       })()
-    }, [episodeStore])
+    }, [postStore])
 
     // simulate a longer refresh, if the refresh is too fast for UX
     async function manualRefresh() {
       setRefreshing(true)
-      await Promise.all([episodeStore.fetchEpisodes(), delay(750)])
+      await Promise.all([postStore.fetchMyPosts(), delay(750)])
       setRefreshing(false)
     }
 
@@ -53,9 +47,9 @@ export const DemoPodcastListScreen: FC<HomeTabScreenProps<"DemoPodcastList">> = 
         safeAreaEdges={["top"]}
         contentContainerStyle={$screenContentContainer}
       >
-        <FlatList<Episode>
-          data={episodeStore.episodesForList}
-          extraData={episodeStore.favorites.length + episodeStore.episodes.length}
+        <FlatList<Post>
+          data={postStore.posts}
+          extraData={postStore.posts.length}
           contentContainerStyle={$flatListContentContainer}
           refreshing={refreshing}
           onRefresh={manualRefresh}
@@ -65,11 +59,9 @@ export const DemoPodcastListScreen: FC<HomeTabScreenProps<"DemoPodcastList">> = 
             </View>
           }
           renderItem={({ item }) => (
-            <EpisodeCard
-              key={item.guid}
-              episode={item}
-              isFavorite={episodeStore.hasFavorite(item)}
-              onPressFavorite={() => episodeStore.toggleFavorite(item)}
+            <PostCard
+              key={item.id}
+              Post={item}
             />
           )}
         />
@@ -78,22 +70,14 @@ export const DemoPodcastListScreen: FC<HomeTabScreenProps<"DemoPodcastList">> = 
   },
 )
 
-const EpisodeCard = observer(function EpisodeCard({
-  episode,
-  isFavorite,
-  onPressFavorite,
+const PostCard = observer(function PostCard({
+  Post,
 }: {
-  episode: Episode
-  onPressFavorite: () => void
-  isFavorite: boolean
+  Post: Post
 }) {
 
-  const imageUri = useMemo(() => {
-    return rnrImages[Math.floor(Math.random() * rnrImages.length)]
-  }, [])
-
   const handlePressCard = () => {
-    openLinkInBrowser(episode.enclosure.link)
+    
   }
 
   return (
@@ -106,41 +90,37 @@ const EpisodeCard = observer(function EpisodeCard({
           <Text
             style={$metadataText}
             size="xxs"
-            accessibilityLabel={episode.datePublished.accessibilityLabel}
+            accessibilityLabel={Post.createdAt}
           >
-            {episode.datePublished.textLabel}
+            {Post.createdAt}
           </Text>
           <Text
             style={$metadataText}
             size="xxs"
-            accessibilityLabel={episode.duration.accessibilityLabel}
+            accessibilityLabel={Post.createdBy.name}
           >
-            {episode.duration.textLabel}
+            {Post.createdBy.name}
           </Text>
         </View>
       }
-      content={`${episode.parsedTitleAndSubtitle.title} - ${episode.parsedTitleAndSubtitle.subtitle}`}
-      RightComponent={<Image source={imageUri} style={$itemThumbnail} />}
+      content={Post.question}
       FooterComponent={
-        <Button
-          style={[$favoriteButton, isFavorite && $unFavoriteButton]}
-          accessibilityLabel={
-            isFavorite
-              ? translate("demoPodcastListScreen.accessibility.unfavoriteIcon")
-              : translate("demoPodcastListScreen.accessibility.favoriteIcon")
-          }
-        >
-          <Text
-            size="xxs"
-            accessibilityLabel={episode.duration.accessibilityLabel}
-            weight="medium"
-            text={
-              isFavorite
-                ? translate("demoPodcastListScreen.unfavoriteButton")
-                : translate("demoPodcastListScreen.favoriteButton")
-            }
-          />
-        </Button>
+        <View>
+           {Post.categories.map(cat => (
+          <Button
+            key={cat.id}
+            style={[$favoriteButton]}
+            accessibilityLabel={cat.displayName}
+          >
+            <Text
+              size="xxs"
+              accessibilityLabel={cat.displayName}
+              weight="medium"
+              text={cat.displayName}
+            />
+          </Button>
+        ))}
+        </View>
       }
     />
   )

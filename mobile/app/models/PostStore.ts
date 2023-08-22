@@ -1,52 +1,38 @@
-import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { Instance, SnapshotOut, getParent, types } from "mobx-state-tree"
 import { api } from "../services/api"
-import { Episode, EpisodeModel } from "./Episode"
+import { Post, PostModel } from "./Post"
 import { withSetPropAction } from "./helpers/withSetPropAction"
+import { storeAnnotation } from "mobx/dist/internal";
+import { RootStore } from "./RootStore";
+import { getRootStore } from "./helpers/getRootStore";
 
-export const EpisodeStoreModel = types
-  .model("EpisodeStore")
+export const PostStoreModel = types
+  .model("PostStore")
   .props({
-    episodes: types.array(EpisodeModel),
-    favorites: types.array(types.reference(EpisodeModel)),
-    favoritesOnly: false,
+    posts: types.array(PostModel),
+    myPosts: types.array(PostModel),
   })
   .actions(withSetPropAction)
   .actions((store) => ({
-    async fetchEpisodes() {
-      const response = await api.getEpisodes()
+    async fetchPosts() {
+      const response = await api.getPosts()
       if (response.kind === "ok") {
-        store.setProp("episodes", response.episodes)
+        store.setProp("posts", response.posts)
       } else {
         console.tron.error(`Error fetching episodes: ${JSON.stringify(response)}`, [])
       }
     },
-    addFavorite(episode: Episode) {
-      store.favorites.push(episode)
-    },
-    removeFavorite(episode: Episode) {
-      store.favorites.remove(episode)
-    },
-  }))
-  .views((store) => ({
-    get episodesForList() {
-      return store.favoritesOnly ? store.favorites : store.episodes
-    },
-
-    hasFavorite(episode: Episode) {
-      return store.favorites.includes(episode)
-    },
-  }))
-  .actions((store) => ({
-    toggleFavorite(episode: Episode) {
-      if (store.hasFavorite(episode)) {
-        store.removeFavorite(episode)
+    async fetchMyPosts() {
+      const response = await api.getMyPosts(getRootStore(store).authenticationStore.user.id)
+      if (response.kind === "ok") {
+        store.setProp("myPosts", response.posts)
       } else {
-        store.addFavorite(episode)
+        console.tron.error(`Error fetching episodes: ${JSON.stringify(response)}`, [])
       }
     },
-  }))
+  }));
 
-export interface EpisodeStore extends Instance<typeof EpisodeStoreModel> {}
-export interface EpisodeStoreSnapshot extends SnapshotOut<typeof EpisodeStoreModel> {}
+export interface PostStore extends Instance<typeof PostStoreModel> {}
+export interface PostStoreSnapshot extends SnapshotOut<typeof PostStoreModel> {}
 
 // @demo remove-file

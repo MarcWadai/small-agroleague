@@ -5,16 +5,14 @@ import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
 import { translate } from "../i18n"
-import { DemoShowroomScreen } from "../screens"
-import { DemoPodcastListScreen } from "../screens/DemoPodcastListScreen"
+import { MyListScreen } from "../screens/MyListScreen"
 import { colors, spacing, typography } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 import { HomeListScreen } from "app/screens/HomeListScreen"
 
 export type HomeTabParamList = {
-  DemoPodcastList: undefined,
   HomeList: undefined,
-  DemoShowroom: { queryIndex?: string; itemIndex?: string }
+  MyList: undefined,
 }
 
 /**
@@ -45,36 +43,24 @@ export function HomeNavigator() {
       }}
     >
       <Tab.Screen
-        name="DemoShowroom"
-        component={DemoShowroomScreen}
-        options={{
-          tabBarLabel: translate("homeNavigator.componentsTab"),
-          tabBarIcon: ({ focused }) => (
-            <Icon icon="components" color={focused && colors.tint} size={30} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="DemoPodcastList"
-        component={DemoPodcastListScreen}
-        options={{
-          tabBarAccessibilityLabel: translate("homeNavigator.podcastListTab"),
-          tabBarLabel: translate("homeNavigator.podcastListTab"),
-          tabBarIcon: ({ focused }) => (
-            <Icon icon="podcast" color={focused && colors.tint} size={30} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
         name="HomeList"
         component={HomeListScreen}
         options={{
-          tabBarAccessibilityLabel: translate("homeNavigator.podcastListTab"),
+          tabBarAccessibilityLabel: translate("homeNavigator.homeListTab"),
           tabBarLabel: translate("homeNavigator.homeListTab"),
           tabBarIcon: ({ focused }) => (
             <Icon icon="community" color={focused && colors.tint} size={30} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="MyList"
+        component={MyListScreen}
+        options={{
+          tabBarAccessibilityLabel: translate("homeNavigator.myListTab"),
+          tabBarLabel: translate("homeNavigator.myListTab"),
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="bell" color={focused && colors.tint} size={30} />
           ),
         }}
       />
