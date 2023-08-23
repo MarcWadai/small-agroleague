@@ -45,6 +45,14 @@ const categories = [
   {
     name: 'outillage',
     displayName: 'Outillage'
+  },
+  {
+    name: 'fertilisation',
+    displayName: 'Fertilisation'
+  },
+  {
+    name: 'soil_analysis',
+    displayName: 'Analyse du sol'
   }
 ];
 

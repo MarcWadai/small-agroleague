@@ -3,6 +3,31 @@ import httpStatus from 'http-status';
 import prisma from '../client';
 import ApiError from '../utils/ApiError';
 
+export const postSelect = {
+  id: true,
+  Categories: true,
+  reco: {
+    select: {
+      id: true,
+      content: true,
+      createdBy: {
+        select: {
+          name: true,
+          id: true
+        }
+      }
+    }
+  },
+  createdBy: {
+    select: {
+      name: true,
+      id: true
+    }
+  },
+  status: true,
+  question: true,
+  createdAt: true
+};
 /**
  * Create a Post
  * @param {Object} PostBody
@@ -37,28 +62,7 @@ const queryPosts = async <Key extends keyof Post>(options: {
   const sortBy = options.sortBy;
   const sortType = options.sortType ?? 'desc';
   const posts = await prisma.post.findMany({
-    select: {
-      id: true,
-      Categories: true,
-      reco: {
-        select: {
-          content: true,
-          createdBy: {
-            select: {
-              name: true,
-              id: true
-            }
-          }
-        }
-      },
-      createdBy: {
-        select: {
-          name: true
-        }
-      },
-      question: true,
-      createdAt: true
-    },
+    select: postSelect,
     skip: page * limit,
     take: limit,
     orderBy: sortBy ? { [sortBy]: sortType } : undefined
@@ -75,28 +79,7 @@ const queryPosts = async <Key extends keyof Post>(options: {
 const getPostById = async <Key extends keyof Post>(id: number): Promise<Pick<Post, Key> | null> => {
   return prisma.post.findUnique({
     where: { id },
-    select: {
-      id: true,
-      Categories: true,
-      reco: {
-        select: {
-          content: true,
-          createdBy: {
-            select: {
-              name: true,
-              id: true
-            }
-          }
-        }
-      },
-      createdBy: {
-        select: {
-          name: true
-        }
-      },
-      question: true,
-      createdAt: true
-    }
+    select: postSelect
   }) as Promise<Pick<Post, Key> | null>;
 };
 
