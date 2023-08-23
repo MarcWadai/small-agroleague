@@ -4,6 +4,10 @@
 
 ## Backend 
 
+Disclaimer :
+There was some last minute error and I could not make the seeds file working properly. (Couldn't insert posts and reco). So to test the application you will have to create data manually. I inserted the insomnia file so you can use it with postman or other request tools. Sorry about that.
+
+
 ### Setup
 For a faster integration, I used a boilerplate that included most of the tools that I was going to use in my nodejs web server application :
 https://github.com/antonio-lazaro/prisma-express-typescript-boilerplate/tree/main
@@ -15,8 +19,6 @@ https://github.com/antonio-lazaro/prisma-express-typescript-boilerplate/tree/mai
 - Docker
 - Dotenv for environement variables
 
-### File structures 
-You can 
 ### Data model
 
 The main model here is a `Post`. We consider a post as question made by our user. 
@@ -30,10 +32,14 @@ And finally a `Category`is simply a table containing information about the diffe
 
 
 ## How is it working
-- When 
+When you start the project with `yarn start` it will :
+- create a docker with the db
+- Initialize and push prisma
+- Create the seeds data (error here..)
+- Start the web server on port 3000
 
 ### TODO on backend side
-- More tests
+- Test...
 
 ---
 
