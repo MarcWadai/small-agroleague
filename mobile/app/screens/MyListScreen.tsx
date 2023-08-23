@@ -1,10 +1,7 @@
 import { observer } from "mobx-react-lite"
-import React, { FC, useEffect, useMemo, ReactElement } from "react"
+import React, { FC, useEffect } from "react"
 import {
   FlatList,
-  Image,
-  ImageStyle,
-  TextStyle,
   View,
   ViewStyle,
 } from "react-native"
@@ -15,8 +12,7 @@ import { Post } from "../models/Post"
 import { HomeTabScreenProps } from "../navigators/HomeNavigator"
 import { colors, spacing } from "../theme"
 import { delay } from "../utils/delay"
-
-const ICON_SIZE = 14
+import { PostCard } from "app/components/PostCard"
 
 export const MyListScreen: FC<HomeTabScreenProps<"MyList">> = observer(
   function MyListScreen(_props) {
@@ -41,6 +37,14 @@ export const MyListScreen: FC<HomeTabScreenProps<"MyList">> = observer(
       setRefreshing(false)
     }
 
+    function addQuestion() {
+      console.log('lets add a question')
+    }
+
+    const handlePressCard = (post) => {
+      _props.navigation.navigate('PostDetail', { post})
+    }
+
     return (
       <Screen
         preset="fixed"
@@ -48,83 +52,34 @@ export const MyListScreen: FC<HomeTabScreenProps<"MyList">> = observer(
         contentContainerStyle={$screenContentContainer}
       >
         <FlatList<Post>
-          data={postStore.posts}
-          extraData={postStore.posts.length}
+          data={postStore.myPosts}
+          extraData={postStore.myPosts.length}
           contentContainerStyle={$flatListContentContainer}
           refreshing={refreshing}
           onRefresh={manualRefresh}
           ListHeaderComponent={
             <View style={$heading}>
-              <Text preset="heading" tx="demoPodcastListScreen.title" />
+              <Text preset="heading" tx="myListScreen.title" />
             </View>
           }
           renderItem={({ item }) => (
             <PostCard
               key={item.id}
-              Post={item}
+              post={item}
+              handlePress={() => handlePressCard(item)}
             />
           )}
         />
+        <Button
+        preset="reversed"
+        style={$resetButton}
+        onPress={addQuestion}
+        tx="myListScreen.add"
+      />
       </Screen>
     )
   },
 )
-
-const PostCard = observer(function PostCard({
-  Post,
-}: {
-  Post: Post
-}) {
-
-  const handlePressCard = () => {
-    
-  }
-
-  return (
-    <Card
-      style={$item}
-      verticalAlignment="force-footer-bottom"
-      onPress={handlePressCard}
-      HeadingComponent={
-        <View style={$metadata}>
-          <Text
-            style={$metadataText}
-            size="xxs"
-            accessibilityLabel={Post.createdAt}
-          >
-            {Post.createdAt}
-          </Text>
-          <Text
-            style={$metadataText}
-            size="xxs"
-            accessibilityLabel={Post.createdBy.name}
-          >
-            {Post.createdBy.name}
-          </Text>
-        </View>
-      }
-      content={Post.question}
-      FooterComponent={
-        <View>
-           {Post.categories.map(cat => (
-          <Button
-            key={cat.id}
-            style={[$favoriteButton]}
-            accessibilityLabel={cat.displayName}
-          >
-            <Text
-              size="xxs"
-              accessibilityLabel={cat.displayName}
-              weight="medium"
-              text={cat.displayName}
-            />
-          </Button>
-        ))}
-        </View>
-      }
-    />
-  )
-})
 
 // #region Styles
 const $screenContentContainer: ViewStyle = {
@@ -141,70 +96,8 @@ const $heading: ViewStyle = {
   marginBottom: spacing.md,
 }
 
-const $item: ViewStyle = {
-  padding: spacing.md,
-  marginTop: spacing.md,
-  minHeight: 120,
-}
 
-const $itemThumbnail: ImageStyle = {
-  marginTop: spacing.sm,
-  borderRadius: 50,
-  alignSelf: "flex-start",
+const $resetButton: ViewStyle = {
+  backgroundColor: colors.palette.primary600,
+  paddingHorizontal: spacing.xxl,
 }
-
-const $toggle: ViewStyle = {
-  marginTop: spacing.md,
-}
-
-const $labelStyle: TextStyle = {
-  textAlign: "left",
-}
-
-const $iconContainer: ViewStyle = {
-  height: ICON_SIZE,
-  width: ICON_SIZE,
-  flexDirection: "row",
-  marginEnd: spacing.sm,
-}
-
-const $metadata: TextStyle = {
-  color: colors.textDim,
-  marginTop: spacing.xs,
-  flexDirection: "row",
-}
-
-const $metadataText: TextStyle = {
-  color: colors.textDim,
-  marginEnd: spacing.md,
-  marginBottom: spacing.xs,
-}
-
-const $favoriteButton: ViewStyle = {
-  borderRadius: 17,
-  marginTop: spacing.md,
-  justifyContent: "flex-start",
-  backgroundColor: colors.palette.neutral300,
-  borderColor: colors.palette.neutral300,
-  paddingHorizontal: spacing.md,
-  paddingTop: spacing.xxxs,
-  paddingBottom: 0,
-  minHeight: 32,
-  alignSelf: "flex-start",
-}
-
-const $unFavoriteButton: ViewStyle = {
-  borderColor: colors.palette.primary100,
-  backgroundColor: colors.palette.primary100,
-}
-
-const $emptyState: ViewStyle = {
-  marginTop: spacing.xxl,
-}
-
-const $emptyStateImage: ImageStyle = {
-  transform: [{ scaleX: isRTL ? -1 : 1 }],
-}
-// #endregion
-
-// @demo remove-file

@@ -6,18 +6,19 @@
  * documentation for more details.
  */
 import {
-  ApiResponse, // @demo remove-current-line
+  ApiResponse,
   ApisauceInstance,
   create,
 } from "apisauce"
 import Config from "../../config"
-import { GeneralApiProblem, getGeneralApiProblem } from "./apiProblem" // @demo remove-current-line
+import { GeneralApiProblem, getGeneralApiProblem } from "./apiProblem"
 import type {
   ApiConfig,
   Post,
-  AuthUser
+  AuthUser,
+  UserPosts
 } from "./api.types"
-import type { PostSnapshotIn } from "../../models/Post" // @demo remove-current-line
+import type { PostSnapshotIn } from "../../models/Post"
 import { AuthenticationStoreSnapshotIn } from "app/models/AuthenticationStore"
 
 
@@ -107,7 +108,7 @@ export class Api {
         categories: raw.Categories,
         createdAt: raw.createdAt,
         createdBy: raw.createdBy,
-        reco: raw.reco
+        reco: raw.reco || undefined
       }))
 
       return { kind: "ok", posts }
@@ -121,7 +122,7 @@ export class Api {
 
   async getMyPosts(userId: number): Promise<{ kind: "ok"; posts: PostSnapshotIn[] } | GeneralApiProblem> {
     // make the api call
-    const response: ApiResponse<Post[]> = await this.apisauce.get(`/posts/${userId}`)
+    const response: ApiResponse<UserPosts> = await this.apisauce.get(`/users/${userId}/posts`)
 
     // the typical ways to die when calling an api
     if (!response.ok) {
@@ -132,12 +133,10 @@ export class Api {
     // transform the data into the format we are expecting
     try {
       const rawData = response.data
-      console.log('rawData', rawData)
       // This is where we transform the data into the shape we expect for our MST model.
-      const posts: PostSnapshotIn[] = rawData.map((raw) => ({
+      const posts: PostSnapshotIn[] = rawData.Post.map((raw) => ({
         ...raw,
-      })) as unknown as PostSnapshotIn[]
-
+      }))
       return { kind: "ok", posts }
     } catch (e) {
       if (__DEV__) {
@@ -146,7 +145,6 @@ export class Api {
       return { kind: "bad-data" }
     }
   }
-  // @demo remove-block-end
 }
 // Singleton instance of the API for convenience
 export const api = new Api()

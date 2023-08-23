@@ -48,7 +48,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
       setAuthPassword("")
       setAuthEmail("")
     } catch(err) {
-      console.log(err)
+      console.tron.error('Error login', err)
     }
   }
 
@@ -144,5 +144,3 @@ const $textField: ViewStyle = {
 const $tapButton: ViewStyle = {
   marginTop: spacing.xs,
 }
-
-// @demo remove-file

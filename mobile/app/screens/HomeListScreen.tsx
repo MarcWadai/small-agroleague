@@ -1,27 +1,17 @@
 import { observer } from "mobx-react-lite"
-import React, { FC, useEffect, useMemo, ReactElement } from "react"
+import React, { FC, useEffect } from "react"
 import {
   FlatList,
-  Image,
-  ImageStyle,
-  TextStyle,
   View,
   ViewStyle,
 } from "react-native"
-import { Button, Card, Screen, Text } from "../components"
-import { isRTL, translate } from "../i18n"
+import { Screen, Text } from "../components"
 import { useStores } from "../models"
 import { Post } from "../models/Post"
 import { HomeTabScreenProps } from "../navigators/HomeNavigator"
-import { colors, spacing } from "../theme"
+import { spacing } from "../theme"
 import { delay } from "../utils/delay"
-
-const ICON_SIZE = 14
-
-const rnrImage1 = require("../../assets/images/rnr-image-1.png")
-const rnrImage2 = require("../../assets/images/rnr-image-2.png")
-const rnrImage3 = require("../../assets/images/rnr-image-3.png")
-const rnrImages = [rnrImage1, rnrImage2, rnrImage3]
+import { PostCard } from "app/components/PostCard"
 
 export const HomeListScreen: FC<HomeTabScreenProps<"HomeList">> = observer(
   function HomeListScreen(_props) {
@@ -46,6 +36,10 @@ export const HomeListScreen: FC<HomeTabScreenProps<"HomeList">> = observer(
       setRefreshing(false)
     }
 
+    const handlePressCard = (post) => {
+      _props.navigation.navigate('PostDetail', {post})
+    }
+
     return (
       <Screen
         preset="fixed"
@@ -60,13 +54,14 @@ export const HomeListScreen: FC<HomeTabScreenProps<"HomeList">> = observer(
           onRefresh={manualRefresh}
           ListHeaderComponent={
             <View style={$heading}>
-              <Text preset="heading" tx="demoPodcastListScreen.title" />
+              <Text preset="heading" tx="homeListScreen.title" />
             </View>
           }
           renderItem={({ item }) => (
             <PostCard
               key={item.id}
-              Post={item}
+              post={item}
+              handlePress={() => handlePressCard(item)}
             />
           )}
         />
@@ -74,66 +69,6 @@ export const HomeListScreen: FC<HomeTabScreenProps<"HomeList">> = observer(
     )
   },
 )
-
-const PostCard = observer(function PostCard({
-  Post,
-}: {
-  Post: Post
-}) {
-
-  const imageUri = useMemo(() => {
-    return rnrImages[Math.floor(Math.random() * rnrImages.length)]
-  }, [])
-
-  const handlePressCard = () => {
-    
-  }
-
-  return (
-    <Card
-      style={$item}
-      verticalAlignment="force-footer-bottom"
-      onPress={handlePressCard}
-      HeadingComponent={
-        <View style={$metadata}>
-          <Text
-            style={$metadataText}
-            size="xxs"
-            accessibilityLabel={Post.createdAt}
-          >
-            {Post.createdAt}
-          </Text>
-          <Text
-            style={$metadataText}
-            size="xxs"
-            accessibilityLabel={Post.createdBy.name}
-          >
-            {Post.createdBy.name}
-          </Text>
-        </View>
-      }
-      content={Post.question}
-      FooterComponent={
-        <View>
-           {Post.categories.map(cat => (
-          <Button
-            key={cat.id}
-            style={[$favoriteButton]}
-            accessibilityLabel={cat.displayName}
-          >
-            <Text
-              size="xxs"
-              accessibilityLabel={cat.displayName}
-              weight="medium"
-              text={cat.displayName}
-            />
-          </Button>
-        ))}
-        </View>
-      }
-    />
-  )
-})
 
 // #region Styles
 const $screenContentContainer: ViewStyle = {
@@ -149,71 +84,3 @@ const $flatListContentContainer: ViewStyle = {
 const $heading: ViewStyle = {
   marginBottom: spacing.md,
 }
-
-const $item: ViewStyle = {
-  padding: spacing.md,
-  marginTop: spacing.md,
-  minHeight: 120,
-}
-
-const $itemThumbnail: ImageStyle = {
-  marginTop: spacing.sm,
-  borderRadius: 50,
-  alignSelf: "flex-start",
-}
-
-const $toggle: ViewStyle = {
-  marginTop: spacing.md,
-}
-
-const $labelStyle: TextStyle = {
-  textAlign: "left",
-}
-
-const $iconContainer: ViewStyle = {
-  height: ICON_SIZE,
-  width: ICON_SIZE,
-  flexDirection: "row",
-  marginEnd: spacing.sm,
-}
-
-const $metadata: TextStyle = {
-  color: colors.textDim,
-  marginTop: spacing.xs,
-  flexDirection: "row",
-}
-
-const $metadataText: TextStyle = {
-  color: colors.textDim,
-  marginEnd: spacing.md,
-  marginBottom: spacing.xs,
-}
-
-const $favoriteButton: ViewStyle = {
-  borderRadius: 17,
-  marginTop: spacing.md,
-  justifyContent: "flex-start",
-  backgroundColor: colors.palette.neutral300,
-  borderColor: colors.palette.neutral300,
-  paddingHorizontal: spacing.md,
-  paddingTop: spacing.xxxs,
-  paddingBottom: 0,
-  minHeight: 32,
-  alignSelf: "flex-start",
-}
-
-const $unFavoriteButton: ViewStyle = {
-  borderColor: colors.palette.primary100,
-  backgroundColor: colors.palette.primary100,
-}
-
-const $emptyState: ViewStyle = {
-  marginTop: spacing.xxl,
-}
-
-const $emptyStateImage: ImageStyle = {
-  transform: [{ scaleX: isRTL ? -1 : 1 }],
-}
-// #endregion
-
-// @demo remove-file

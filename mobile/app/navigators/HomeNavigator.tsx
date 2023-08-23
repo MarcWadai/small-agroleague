@@ -9,12 +9,16 @@ import { MyListScreen } from "../screens/MyListScreen"
 import { colors, spacing, typography } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 import { HomeListScreen } from "app/screens/HomeListScreen"
+import { Post } from "app/models/Post"
 
 export type HomeTabParamList = {
   HomeList: undefined,
   MyList: undefined,
 }
 
+export type PostDetailParam = {
+  post: Post
+}
 /**
  * Helper for automatically generating navigation prop types for each route.
  *
@@ -83,5 +87,3 @@ const $tabBarLabel: TextStyle = {
   lineHeight: 16,
   flex: 1,
 }
-
-// @demo remove-file

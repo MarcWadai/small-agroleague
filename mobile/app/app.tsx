@@ -38,15 +38,10 @@ const config = {
     Login: {
       path: "",
     },
-    Welcome: "welcome",
-    Demo: {
+    home: {
       screens: {
-        DemoShowroom: {
-          path: "showroom/:queryIndex?/:itemIndex?",
-        },
-        DemoDebug: "debug",
-        DemoPodcastList: "podcast",
-        DemoCommunity: "community",
+        homeList:"home",
+        myList: "myList",
       },
     },
   },

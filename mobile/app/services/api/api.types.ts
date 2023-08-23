@@ -23,7 +23,14 @@ export interface Post {
     name: string
     id: number,
   }
-  createdAt: Date
+  status: string
+  createdAt: string
+}
+
+export interface UserPosts {
+  id: number
+  name: string
+  Post: Post[]
 }
 
 export interface AuthUser {
@@ -35,11 +42,11 @@ export interface AuthUser {
     tokens: {
       access: {
         token: string
-        expires: Date
+        expires: string
       },
       refresh: {
         token: string
-        expires: Date
+        expires: string
       }
     }
 	}

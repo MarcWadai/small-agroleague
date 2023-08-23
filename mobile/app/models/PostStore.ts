@@ -35,4 +35,3 @@ export const PostStoreModel = types
 export interface PostStore extends Instance<typeof PostStoreModel> {}
 export interface PostStoreSnapshot extends SnapshotOut<typeof PostStoreModel> {}
 
-// @demo remove-file

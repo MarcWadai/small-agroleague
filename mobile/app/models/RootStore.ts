@@ -1,14 +1,14 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
-import { AuthenticationStoreModel } from "./AuthenticationStore" // @demo remove-current-line
-import { PostStoreModel } from "./PostStore" // @demo remove-current-line
+import { AuthenticationStoreModel } from "./AuthenticationStore"
+import { PostStoreModel } from "./PostStore"
 
 
 /**
  * A RootStore model.
  */
 export const RootStoreModel = types.model("RootStore").props({
-  authenticationStore: types.optional(AuthenticationStoreModel, {}), // @demo remove-current-line
-  postStore: types.optional(PostStoreModel, {}), // @demo remove-current-line
+  authenticationStore: types.optional(AuthenticationStoreModel, {}), 
+  postStore: types.optional(PostStoreModel, {}),
 }).views(self => ({
   get authenticatedUser() {
     return self.authenticationStore?.user
