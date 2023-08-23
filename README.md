@@ -29,7 +29,8 @@ A `Reco`is a set of data containing the agronome answer to the `Post`
 And finally a `Category`is simply a table containing information about the different sections the post is related about 
 
 
-### 
+## How is it working
+- When 
 
 ### TODO on backend side
 - More tests

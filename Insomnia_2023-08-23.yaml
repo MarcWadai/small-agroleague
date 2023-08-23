@@ -1,0 +1,196 @@
+_type: export
+__export_format: 4
+__export_date: 2023-08-23T08:02:50.093Z
+__export_source: insomnia.desktop.app:v2023.4.0
+resources:
+  - _id: req_1e2ed94cb2a3442ebe3dd5c9c2582039
+    parentId: wrk_dac9cd010c894921811acd7e0407c6d1
+    modified: 1692748830781
+    created: 1692738208924
+    url: "{{ _.url }}/v1/users/1/posts"
+    name: users post
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1692738208924
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: wrk_dac9cd010c894921811acd7e0407c6d1
+    parentId: null
+    modified: 1692609264514
+    created: 1692609264514
+    name: Agroleague test
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_c74281abf4bc4727b9dbda0fe105eaca
+    parentId: wrk_dac9cd010c894921811acd7e0407c6d1
+    modified: 1692696155865
+    created: 1692695967595
+    url: "{{ _.url }}/v1/posts/1/reco"
+    name: create Reco
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"content": "This is a recommendation for your question"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImlhdCI6MTY5MjY5NjE0OCwiZXhwIjoxNjkyNjk3OTQ4LCJ0eXBlIjoiQUNDRVNTIn0.LEDgKQwCAH91u3AtJ1pmwGSlLKI3wLzfOovmbze1gFY
+    metaSortKey: -1692695967595
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_d58c0a777db241f0b57c91c44fbc6f6c
+    parentId: wrk_dac9cd010c894921811acd7e0407c6d1
+    modified: 1692631861426
+    created: 1692631841056
+    url: "{{ _.url }}/v1/posts/1"
+    name: Post by Id
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1692631841056
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_2b00d54b70214b3bafb83f4b78c60083
+    parentId: wrk_dac9cd010c894921811acd7e0407c6d1
+    modified: 1692631838912
+    created: 1692630580395
+    url: "{{ _.url }}/v1/posts"
+    name: Query posts
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY5MjYxMzk3NSwiZXhwIjoxNjkyNjE1Nzc1LCJ0eXBlIjoiQUNDRVNTIn0.Ct9u7YkEjaRviFJnn0R2cCdJhovpU7WgsR-ll8G2DAE
+    metaSortKey: -1692630580395
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_15945b3af6514ed8acb39a749f4a3699
+    parentId: wrk_dac9cd010c894921811acd7e0407c6d1
+    modified: 1692736423169
+    created: 1692613196289
+    url: "{{ _.url }}/v1/posts"
+    name: create post
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"question":	"Ceci est une deuxieme question de patrick",
+        	"categoriesId": [1]
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_1b89adea4d43472a96b53ad0df2dfe40
+      - id: pair_6e09ae7a46d24f88b999a42ba97fa37a
+        name: Authorization
+        value: ""
+        description: ""
+        disabled: true
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTY5MjczNjQwNiwiZXhwIjoxNjkyNzM4MjA2LCJ0eXBlIjoiQUNDRVNTIn0.IGMMg5AICSt494I0Kt5j0rJKDYhfaWz0nlaZVaD2Q0k
+      disabled: false
+    metaSortKey: -1692613196289
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_c9e5d6e388d94982ad5f87850d0e105f
+    parentId: wrk_dac9cd010c894921811acd7e0407c6d1
+    modified: 1692736405601
+    created: 1692609318648
+    url: "{{ _.url }}/v1/auth/login"
+    name: login
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"email": "patrickgrain@riseup.net",
+        	"password": "password1"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication: {}
+    metaSortKey: -1692609318648
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_85a3e758549b107fb04f4b2a5decf4e537472ab9
+    parentId: wrk_dac9cd010c894921811acd7e0407c6d1
+    modified: 1692609310290
+    created: 1692609264518
+    name: Base Environment
+    data:
+      url: localhost:3000
+    dataPropertyOrder:
+      "&":
+        - url
+    color: null
+    isPrivate: false
+    metaSortKey: 1692609264518
+    _type: environment
+  - _id: jar_85a3e758549b107fb04f4b2a5decf4e537472ab9
+    parentId: wrk_dac9cd010c894921811acd7e0407c6d1
+    modified: 1692609264521
+    created: 1692609264521
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
