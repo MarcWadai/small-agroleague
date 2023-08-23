@@ -3,13 +3,11 @@ import React from "react"
 import { Post } from "app/models/Post"
 import { observer } from "mobx-react-lite"
 import {
-  ImageStyle,
   TextStyle,
   View,
   ViewStyle,
 } from "react-native"
 import { Button, Card, Text } from "../components"
-import { isRTL } from "../i18n"
 import { colors, spacing } from "../theme"
 
 const ICON_SIZE = 14
@@ -76,26 +74,6 @@ const $item: ViewStyle = {
   minHeight: 120,
 }
 
-const $itemThumbnail: ImageStyle = {
-  marginTop: spacing.sm,
-  borderRadius: 50,
-  alignSelf: "flex-start",
-}
-
-const $toggle: ViewStyle = {
-  marginTop: spacing.md,
-}
-
-const $labelStyle: TextStyle = {
-  textAlign: "left",
-}
-
-const $iconContainer: ViewStyle = {
-  height: ICON_SIZE,
-  width: ICON_SIZE,
-  flexDirection: "row",
-  marginEnd: spacing.sm,
-}
 
 const $metadata: TextStyle = {
   color: colors.textDim,
@@ -120,17 +98,4 @@ const $favoriteButton: ViewStyle = {
   paddingBottom: 0,
   minHeight: 32,
   alignSelf: "flex-start",
-}
-
-const $unFavoriteButton: ViewStyle = {
-  borderColor: colors.palette.primary100,
-  backgroundColor: colors.palette.primary100,
-}
-
-const $emptyState: ViewStyle = {
-  marginTop: spacing.xxl,
-}
-
-const $emptyStateImage: ImageStyle = {
-  transform: [{ scaleX: isRTL ? -1 : 1 }],
 }

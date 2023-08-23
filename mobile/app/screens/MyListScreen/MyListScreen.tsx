@@ -2,14 +2,12 @@ import { observer } from "mobx-react-lite"
 import React, { FC, useEffect } from "react"
 import {
   FlatList,
-  View,
   ViewStyle,
 } from "react-native"
-import { Button, Card, Screen, Text } from "../../components"
-import { isRTL, translate } from "../../i18n"
+import { Button, Screen } from "../../components"
 import { useStores } from "../../models"
 import { Post } from "../../models/Post"
-import { NestedStackScreenProps, StackMyList } from "../../navigators/HomeNavigator"
+import { NestedStackScreenProps } from "../../navigators/HomeNavigator"
 import { colors, spacing } from "../../theme"
 import { delay } from "../../utils/delay"
 import { PostCard } from "app/components/PostCard"
@@ -57,11 +55,6 @@ export const MyListScreen: FC<NestedStackScreenProps<"MyList">> = observer(
           contentContainerStyle={$flatListContentContainer}
           refreshing={refreshing}
           onRefresh={manualRefresh}
-          ListHeaderComponent={
-            <View style={$heading}>
-              <Text preset="heading" tx="myListScreen.title" />
-            </View>
-          }
           renderItem={({ item }) => (
             <PostCard
               key={item.id}

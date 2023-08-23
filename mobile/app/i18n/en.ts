@@ -53,7 +53,13 @@ const en = {
   },
   myListScreen: {
     title: "My questions",
-    add: "Add"
+    add: "Add a new post"
+  },
+  postDetailScreen: {
+    title: "Selected post",
+    recoTitle: "Answer:",
+    noRecoContent: "We are currently working on a recommandation",
+    yourAgronome: "Your technical advisor"
   }
 }
 

@@ -55,6 +55,12 @@ const fr = {
   myListScreen: {
     title: "My questions",
     add: "Add"
+  },
+  postDetailScreen: {
+    title: "Selected post",
+    recoTitle: "Answer:",
+    noRecoContent: "Nous sommes en train de formuler une réponse",
+    yourAgronome: "Votre agronome"
   }
 }
 

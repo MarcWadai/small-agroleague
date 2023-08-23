@@ -2,7 +2,6 @@ import { observer } from "mobx-react-lite"
 import React, { FC, useEffect } from "react"
 import {
   FlatList,
-  View,
   ViewStyle,
 } from "react-native"
 import { Screen, Text } from "../../components"
@@ -53,11 +52,6 @@ export const HomeListScreen: FC<NestedStackScreenProps<any>> = observer(
           contentContainerStyle={$flatListContentContainer}
           refreshing={refreshing}
           onRefresh={manualRefresh}
-          ListHeaderComponent={
-            <View style={$heading}>
-              <Text preset="heading" tx="homeListScreen.title" />
-            </View>
-          }
           renderItem={({ item }) => (
             <PostCard
               key={item.id}
@@ -80,8 +74,4 @@ const $flatListContentContainer: ViewStyle = {
   paddingHorizontal: spacing.lg,
   paddingTop: spacing.lg + spacing.xl,
   paddingBottom: spacing.lg,
-}
-
-const $heading: ViewStyle = {
-  marginBottom: spacing.md,
 }
