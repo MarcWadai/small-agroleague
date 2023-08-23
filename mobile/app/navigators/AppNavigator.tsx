@@ -17,7 +17,7 @@ import { useColorScheme } from "react-native"
 import * as Screens from "app/screens"
 import Config from "../config"
 import { useStores } from "../models"
-import { HomeNavigator, HomeTabParamList, PostDetailParam } from "./HomeNavigator"
+import { HomeNavigator, HomeTabParamList } from "./HomeNavigator"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { colors } from "app/theme"
 import { Button } from "app/components"
@@ -40,7 +40,6 @@ import { Button } from "app/components"
 export type AppStackParamList = {
   Login: undefined
   Home: NavigatorScreenParams<HomeTabParamList>,
-  PostDetail: PostDetailParam
 }
 
 /**
@@ -70,14 +69,6 @@ const AppStack = observer(function AppStack() {
       {isAuthenticated ? (
         <>
           <Stack.Screen name="Home" component={HomeNavigator} />
-          <Stack.Screen name="PostDetail" component={Screens.PostDetailScreen} options={{
-            headerLeft: () => (
-              <Button
-                text="Back"
-                onPress={() => alert('This is a button!')}
-              />
-            )
-          }} />
         </>
       ) : (
         <>

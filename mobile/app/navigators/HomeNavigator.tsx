@@ -1,15 +1,19 @@
 import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { CompositeScreenProps } from "@react-navigation/native"
+import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
 import React from "react"
 import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
 import { translate } from "../i18n"
-import { MyListScreen } from "../screens/MyListScreen"
+import { MyListScreen } from "../screens/MyListScreen/MyListScreen"
 import { colors, spacing, typography } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
-import { HomeListScreen } from "app/screens/HomeListScreen"
+import { HomeListScreen } from "app/screens/HomeListScreen/HomeListScreen"
 import { Post } from "app/models/Post"
+import { PostDetailScreen } from "app/screens"
+import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
+import { MyListNavigator } from "app/screens/MyListScreen/MyListNavigator"
+import { HomeListNavigator } from "app/screens/HomeListScreen/HomeListNavigator"
 
 export type HomeTabParamList = {
   HomeList: undefined,
@@ -19,6 +23,19 @@ export type HomeTabParamList = {
 export type PostDetailParam = {
   post: Post
 }
+
+type NestedStackScreenParamList = {
+  HomeList: undefined
+  PostDetail : PostDetailParam,
+  MyList: undefined
+}
+
+export const StackHomeList = createNativeStackNavigator<NestedStackScreenParamList>()
+export const StackMyList = createNativeStackNavigator<NestedStackScreenParamList>()
+export type NestedStackScreenProps<T extends keyof NestedStackScreenParamList> = NativeStackScreenProps<
+NestedStackScreenParamList,
+  T
+>
 /**
  * Helper for automatically generating navigation prop types for each route.
  *
@@ -48,23 +65,23 @@ export function HomeNavigator() {
     >
       <Tab.Screen
         name="HomeList"
-        component={HomeListScreen}
+        component={HomeListNavigator}
         options={{
           tabBarAccessibilityLabel: translate("homeNavigator.homeListTab"),
           tabBarLabel: translate("homeNavigator.homeListTab"),
           tabBarIcon: ({ focused }) => (
-            <Icon icon="community" color={focused && colors.tint} size={30} />
+            <Icon icon="community" color={focused && colors.tint} size={20} />
           ),
         }}
       />
       <Tab.Screen
         name="MyList"
-        component={MyListScreen}
+        component={MyListNavigator}
         options={{
           tabBarAccessibilityLabel: translate("homeNavigator.myListTab"),
           tabBarLabel: translate("homeNavigator.myListTab"),
           tabBarIcon: ({ focused }) => (
-            <Icon icon="bell" color={focused && colors.tint} size={30} />
+            <Icon icon="bell" color={focused && colors.tint} size={20} />
           ),
         }}
       />

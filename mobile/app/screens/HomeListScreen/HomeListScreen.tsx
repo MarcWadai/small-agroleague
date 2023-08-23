@@ -5,15 +5,15 @@ import {
   View,
   ViewStyle,
 } from "react-native"
-import { Screen, Text } from "../components"
-import { useStores } from "../models"
-import { Post } from "../models/Post"
-import { HomeTabScreenProps } from "../navigators/HomeNavigator"
-import { spacing } from "../theme"
-import { delay } from "../utils/delay"
+import { Screen, Text } from "../../components"
+import { useStores } from "../../models"
+import { Post } from "../../models/Post"
+import { NestedStackScreenProps } from "../../navigators/HomeNavigator"
+import { colors, spacing } from "../../theme"
+import { delay } from "../../utils/delay"
 import { PostCard } from "app/components/PostCard"
 
-export const HomeListScreen: FC<HomeTabScreenProps<"HomeList">> = observer(
+export const HomeListScreen: FC<NestedStackScreenProps<any>> = observer(
   function HomeListScreen(_props) {
     const { postStore } = useStores()
 
@@ -37,14 +37,15 @@ export const HomeListScreen: FC<HomeTabScreenProps<"HomeList">> = observer(
     }
 
     const handlePressCard = (post) => {
-      _props.navigation.navigate('PostDetail', {post})
+      // _props.navigation.push('PostDetail' ,{post})
+      _props.navigation.navigate("PostDetail", { post })
     }
 
     return (
       <Screen
-        preset="fixed"
-        safeAreaEdges={["top"]}
-        contentContainerStyle={$screenContentContainer}
+      preset="fixed"
+      safeAreaEdges={["top"]}
+      contentContainerStyle={$screenContentContainer}
       >
         <FlatList<Post>
           data={postStore.posts}
@@ -65,7 +66,7 @@ export const HomeListScreen: FC<HomeTabScreenProps<"HomeList">> = observer(
             />
           )}
         />
-      </Screen>
+     </Screen>
     )
   },
 )

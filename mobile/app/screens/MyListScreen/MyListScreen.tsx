@@ -5,16 +5,16 @@ import {
   View,
   ViewStyle,
 } from "react-native"
-import { Button, Card, Screen, Text } from "../components"
-import { isRTL, translate } from "../i18n"
-import { useStores } from "../models"
-import { Post } from "../models/Post"
-import { HomeTabScreenProps } from "../navigators/HomeNavigator"
-import { colors, spacing } from "../theme"
-import { delay } from "../utils/delay"
+import { Button, Card, Screen, Text } from "../../components"
+import { isRTL, translate } from "../../i18n"
+import { useStores } from "../../models"
+import { Post } from "../../models/Post"
+import { NestedStackScreenProps, StackMyList } from "../../navigators/HomeNavigator"
+import { colors, spacing } from "../../theme"
+import { delay } from "../../utils/delay"
 import { PostCard } from "app/components/PostCard"
 
-export const MyListScreen: FC<HomeTabScreenProps<"MyList">> = observer(
+export const MyListScreen: FC<NestedStackScreenProps<"MyList">> = observer(
   function MyListScreen(_props) {
     const { postStore } = useStores()
 
@@ -42,7 +42,7 @@ export const MyListScreen: FC<HomeTabScreenProps<"MyList">> = observer(
     }
 
     const handlePressCard = (post) => {
-      _props.navigation.navigate('PostDetail', { post})
+      _props.navigation.navigate('PostDetail' ,{post})
     }
 
     return (
@@ -71,11 +71,11 @@ export const MyListScreen: FC<HomeTabScreenProps<"MyList">> = observer(
           )}
         />
         <Button
-        preset="reversed"
-        style={$resetButton}
-        onPress={addQuestion}
-        tx="myListScreen.add"
-      />
+          preset="reversed"
+          style={$resetButton}
+          onPress={addQuestion}
+          tx="myListScreen.add"
+        />
       </Screen>
     )
   },

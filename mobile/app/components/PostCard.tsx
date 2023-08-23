@@ -14,12 +14,12 @@ import { colors, spacing } from "../theme"
 
 const ICON_SIZE = 14
 
-interface PosCardProps {
+interface PostCardProps {
     post?: Post
     handlePress(): void
 }
 
-export const PostCard = observer(function PostCard(props : PosCardProps) {
+export const PostCard = observer(function PostCard(props : PostCardProps) {
     if (props.post) {
         return (
             <Card

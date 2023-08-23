@@ -3,9 +3,9 @@ import { TextStyle, View, ViewStyle } from "react-native"
 import { Button, Icon, Screen, Text } from "../components"
 import { colors, spacing } from "../theme"
 import { PostCard } from "app/components/PostCard"
-import { AppStackScreenProps } from "app/navigators"
+import { NestedStackScreenProps } from "app/navigators/HomeNavigator"
 
-interface PostDetailScreenProps extends AppStackScreenProps<"PostDetail"> {}
+interface PostDetailScreenProps extends NestedStackScreenProps<"PostDetail"> {}
 export const PostDetailScreen: FC<PostDetailScreenProps> = function (_props) {
 
   // we do nothing on card press in this page
