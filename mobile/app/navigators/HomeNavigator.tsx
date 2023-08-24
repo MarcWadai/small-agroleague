@@ -1,23 +1,20 @@
-import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
-import React from "react"
-import { TextStyle, ViewStyle } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { Icon } from "../components"
-import { translate } from "../i18n"
-import { MyListScreen } from "../screens/MyListScreen/MyListScreen"
-import { colors, spacing, typography } from "../theme"
-import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
-import { HomeListScreen } from "app/screens/HomeListScreen/HomeListScreen"
-import { Post } from "app/models/Post"
-import { PostDetailScreen } from "app/screens"
-import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
-import { MyListNavigator } from "app/screens/MyListScreen/MyListNavigator"
-import { HomeListNavigator } from "app/screens/HomeListScreen/HomeListNavigator"
+import { BottomTabScreenProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { CompositeScreenProps } from '@react-navigation/native'
+import React from 'react'
+import { TextStyle, ViewStyle } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Icon } from '../components'
+import { translate } from '../i18n'
+import { colors, spacing, typography } from '../theme'
+import { AppStackParamList, AppStackScreenProps } from './AppNavigator'
+import { Post } from 'app/models/Post'
+import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack'
+import { MyListNavigator } from 'app/screens/MyListScreen/MyListNavigator'
+import { HomeListNavigator } from 'app/screens/HomeListScreen/HomeListNavigator'
 
 export type HomeTabParamList = {
-  HomeList: undefined,
-  MyList: undefined,
+  HomeList: undefined
+  MyList: undefined
 }
 
 export type PostDetailParam = {
@@ -26,16 +23,14 @@ export type PostDetailParam = {
 
 type NestedStackScreenParamList = {
   HomeList: undefined
-  PostDetail : PostDetailParam,
+  PostDetail: PostDetailParam
   MyList: undefined
 }
 
 export const StackHomeList = createNativeStackNavigator<NestedStackScreenParamList>()
 export const StackMyList = createNativeStackNavigator<NestedStackScreenParamList>()
-export type NestedStackScreenProps<T extends keyof NestedStackScreenParamList> = NativeStackScreenProps<
-NestedStackScreenParamList,
-  T
->
+export type NestedStackScreenProps<T extends keyof NestedStackScreenParamList> =
+  NativeStackScreenProps<NestedStackScreenParamList, T>
 /**
  * Helper for automatically generating navigation prop types for each route.
  *
@@ -67,8 +62,8 @@ export function HomeNavigator() {
         name="HomeList"
         component={HomeListNavigator}
         options={{
-          tabBarAccessibilityLabel: translate("homeNavigator.homeListTab"),
-          tabBarLabel: translate("homeNavigator.homeListTab"),
+          tabBarAccessibilityLabel: translate('homeNavigator.homeListTab'),
+          tabBarLabel: translate('homeNavigator.homeListTab'),
           tabBarIcon: ({ focused }) => (
             <Icon icon="community" color={focused && colors.tint} size={20} />
           ),
@@ -78,8 +73,8 @@ export function HomeNavigator() {
         name="MyList"
         component={MyListNavigator}
         options={{
-          tabBarAccessibilityLabel: translate("homeNavigator.myListTab"),
-          tabBarLabel: translate("homeNavigator.myListTab"),
+          tabBarAccessibilityLabel: translate('homeNavigator.myListTab'),
+          tabBarLabel: translate('homeNavigator.myListTab'),
           tabBarIcon: ({ focused }) => (
             <Icon icon="bell" color={focused && colors.tint} size={20} />
           ),

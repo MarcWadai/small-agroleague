@@ -1,29 +1,29 @@
-import { PrismaClient, Role } from "@prisma/client";
+import { PrismaClient, Role } from '@prisma/client';
 const prisma = new PrismaClient();
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs';
 
-const password = "password1";
+const password = 'password1';
 const salt = bcrypt.genSaltSync(8);
 
 const users = [
   {
     id: 1,
-    name: "Jean-Michou",
-    email: "jeammichou@protonmail.com",
+    name: 'Jean-Michou',
+    email: 'jeammichou@protonmail.com',
     password,
     role: Role.USER,
   },
   {
     id: 2,
-    name: "Patrick Grain",
-    email: "patrickgrain@riseup.net",
+    name: 'Patrick Grain',
+    email: 'patrickgrain@riseup.net',
     password,
     role: Role.USER,
   },
   {
     id: 3,
-    name: "Frederic Agronome",
-    email: "fred@agroleague.fr",
+    name: 'Frederic Agronome',
+    email: 'fred@agroleague.fr',
     password,
     role: Role.ADMIN,
   },
@@ -31,28 +31,28 @@ const users = [
 
 const categories = [
   {
-    name: "couvert",
-    displayName: "Couvert",
+    name: 'couvert',
+    displayName: 'Couvert',
   },
   {
-    name: "semence",
-    displayName: "Semence",
+    name: 'semence',
+    displayName: 'Semence',
   },
   {
-    name: "rotation_culture",
-    displayName: "Rotation des cultures",
+    name: 'rotation_culture',
+    displayName: 'Rotation des cultures',
   },
   {
-    name: "outillage",
-    displayName: "Outillage",
+    name: 'outillage',
+    displayName: 'Outillage',
   },
   {
-    name: "fertilisation",
-    displayName: "Fertilisation",
+    name: 'fertilisation',
+    displayName: 'Fertilisation',
   },
   {
-    name: "soil_analysis",
-    displayName: "Analyse du sol",
+    name: 'soil_analysis',
+    displayName: 'Analyse du sol',
   },
 ];
 
@@ -63,7 +63,7 @@ const posts = [
     createdBy: {
       connect: { id: 1 },
     },
-    question: "Ceci est une première question ?",
+    question: 'Ceci est une première question ?',
     Categories: {
       connect: [{ id: 1 }],
     },
@@ -73,7 +73,7 @@ const posts = [
     createdBy: {
       connect: { id: 1 },
     },
-    question: "Ceci est une deuxième question ?",
+    question: 'Ceci est une deuxième question ?',
     Categories: {
       connect: [{ id: 2 }],
     },
@@ -83,7 +83,7 @@ const posts = [
     createdBy: {
       connect: { id: 2 },
     },
-    question: "Ceci est une troisième question ?",
+    question: 'Ceci est une troisième question ?',
     Categories: {
       connect: [{ id: 2 }, { id: 3 }],
     },
@@ -94,13 +94,13 @@ const recos = [
   {
     id: 1,
     userId: 3,
-    content: "This is a recommendation for your question",
+    content: 'This is a recommendation for your question',
     parentPostId: 1,
   },
   {
     id: 2,
     userId: 3,
-    content: "This is another recommendation for your question",
+    content: 'This is another recommendation for your question',
     parentPostId: 2,
   },
 ];

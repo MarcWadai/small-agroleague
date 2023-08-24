@@ -1,17 +1,17 @@
-import { observer } from "mobx-react-lite"
-import React, { FC, useEffect, useMemo, useRef, useState } from "react"
-import { TextInput, TextStyle, ViewStyle } from "react-native"
-import { Button, Icon, Screen, Text, TextField, TextFieldAccessoryProps } from "../components"
-import { useStores } from "../models"
-import { AppStackScreenProps } from "../navigators"
-import { colors, spacing } from "../theme"
+import { observer } from 'mobx-react-lite'
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
+import { TextInput, TextStyle, ViewStyle } from 'react-native'
+import { Button, Icon, Screen, Text, TextField, TextFieldAccessoryProps } from '../components'
+import { useStores } from '../models'
+import { AppStackScreenProps } from '../navigators'
+import { colors, spacing } from '../theme'
 
-interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
+type LoginScreenProps = AppStackScreenProps<'Login'>
 
 export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_props) {
   const authPasswordInput = useRef<TextInput>()
 
-  const [authPassword, setAuthPassword] = useState("")
+  const [authPassword, setAuthPassword] = useState('')
   const [isAuthPasswordHidden, setIsAuthPasswordHidden] = useState(true)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [attemptsCount, setAttemptsCount] = useState(0)
@@ -22,17 +22,17 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
   useEffect(() => {
     // Here is where you could fetch credentials from keychain or storage
     // and pre-fill the form fields.
-    setAuthEmail("jeammichou@protonmail.com")
-    setAuthPassword("password1")
-    
+    setAuthEmail('jeammichou@protonmail.com')
+    setAuthPassword('password1')
+
     // Return a "cleanup" function that React will run when the component unmounts
     return () => {
-      setAuthPassword("")
-      setAuthEmail("")
+      setAuthPassword('')
+      setAuthEmail('')
     }
   }, [])
 
-  const error = isSubmitted ? validationError : ""
+  const error = isSubmitted ? validationError : ''
 
   async function login() {
     setIsSubmitted(true)
@@ -45,9 +45,9 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
     try {
       await sendLogin(authEmail, authPassword)
       setIsSubmitted(false)
-      setAuthPassword("")
-      setAuthEmail("")
-    } catch(err) {
+      setAuthPassword('')
+      setAuthEmail('')
+    } catch (err) {
       console.tron.error('Error login', err)
     }
   }
@@ -57,7 +57,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
       function PasswordRightAccessory(props: TextFieldAccessoryProps) {
         return (
           <Icon
-            icon={isAuthPasswordHidden ? "view" : "hidden"}
+            icon={isAuthPasswordHidden ? 'view' : 'hidden'}
             color={colors.palette.neutral800}
             containerStyle={props.style}
             size={20}
@@ -72,7 +72,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
     <Screen
       preset="auto"
       contentContainerStyle={$screenContentContainer}
-      safeAreaEdges={["top", "bottom"]}
+      safeAreaEdges={['top', 'bottom']}
     >
       <Text testID="login-heading" tx="loginScreen.signIn" preset="heading" style={$signIn} />
       <Text tx="loginScreen.enterDetails" preset="subheading" style={$enterDetails} />
@@ -89,7 +89,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
         labelTx="loginScreen.emailFieldLabel"
         placeholderTx="loginScreen.emailFieldPlaceholder"
         helper={error}
-        status={error ? "error" : undefined}
+        status={error ? 'error' : undefined}
         onSubmitEditing={() => authPasswordInput.current?.focus()}
       />
 

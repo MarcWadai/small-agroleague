@@ -5,23 +5,25 @@
 
 export interface Post {
   id: number
-  Categories: [{
-    id: number
-    name: string
-    displayName: string
-  }]
+  Categories: [
+    {
+      id: number
+      name: string
+      displayName: string
+    },
+  ]
   reco: {
     id: number
     content: string
     createdBy: {
       name: string
-      id: number,
+      id: number
     }
   }
   question: string
   createdBy: {
     name: string
-    id: number,
+    id: number
   }
   status: string
   createdAt: string
@@ -34,22 +36,22 @@ export interface UserPosts {
 }
 
 export interface AuthUser {
-    user: {
-      id: number
-      email: string
-      name: string
+  user: {
+    id: number
+    email: string
+    name: string
+  }
+  tokens: {
+    access: {
+      token: string
+      expires: string
     }
-    tokens: {
-      access: {
-        token: string
-        expires: string
-      },
-      refresh: {
-        token: string
-        expires: string
-      }
+    refresh: {
+      token: string
+      expires: string
     }
-	}
+  }
+}
 
 /**
  * The options used to configure apisauce.

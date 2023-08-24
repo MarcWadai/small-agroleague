@@ -1,15 +1,15 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
-import { UserModel } from "./User"
-import { api } from "app/services/api"
-import { withSetPropAction } from "./helpers/withSetPropAction"
+import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree'
+import { UserModel } from './User'
+import { api } from 'app/services/api'
+import { withSetPropAction } from './helpers/withSetPropAction'
 
 export const AuthenticationStoreModel = types
-  .model("AuthenticationStore")
+  .model('AuthenticationStore')
   .props({
     authToken: types.maybe(types.string),
-    authEmail: "",
-    name: "",
-    user: types.maybe(UserModel)
+    authEmail: '',
+    name: '',
+    user: types.maybe(UserModel),
   })
   .views((store) => ({
     get isAuthenticated() {
@@ -17,10 +17,10 @@ export const AuthenticationStoreModel = types
     },
     get validationError() {
       if (store.authEmail.length === 0) return "can't be blank"
-      if (store.authEmail.length < 6) return "must be at least 6 characters"
+      if (store.authEmail.length < 6) return 'must be at least 6 characters'
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(store.authEmail))
-        return "must be a valid email address"
-      return ""
+        return 'must be a valid email address'
+      return ''
     },
   }))
   .actions(withSetPropAction)
@@ -29,14 +29,14 @@ export const AuthenticationStoreModel = types
       store.authToken = value
     },
     setAuthEmail(value: string) {
-      store.authEmail = value.replace(/ /g, "")
+      store.authEmail = value.replace(/ /g, '')
     },
     setAuthName(value: string) {
       store.authEmail = value
     },
     async sendLogin(email: string, password: string) {
       const response = await api.postLogin(email, password)
-      if (response.kind === "ok") {
+      if (response.kind === 'ok') {
         store.setProp('authToken', response.authUser.authToken)
         store.setProp('authEmail', response.authUser.authEmail)
         store.setProp('name', response.authUser.name)
@@ -47,12 +47,12 @@ export const AuthenticationStoreModel = types
     },
     logout() {
       store.authToken = undefined
-      store.authEmail = ""
-      store.name = ""
+      store.authEmail = ''
+      store.name = ''
       store.user = undefined
     },
   }))
 
-export interface AuthenticationStore extends Instance<typeof AuthenticationStoreModel> {}
-export interface AuthenticationStoreSnapshot extends SnapshotOut<typeof AuthenticationStoreModel> {}
-export interface AuthenticationStoreSnapshotIn extends SnapshotIn<typeof AuthenticationStoreModel> {}
+export type AuthenticationStore = Instance<typeof AuthenticationStoreModel>
+export type AuthenticationStoreSnapshot = SnapshotOut<typeof AuthenticationStoreModel>
+export type AuthenticationStoreSnapshotIn = SnapshotIn<typeof AuthenticationStoreModel>

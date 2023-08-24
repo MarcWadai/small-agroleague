@@ -9,19 +9,17 @@ import {
   DefaultTheme,
   NavigationContainer,
   NavigatorScreenParams,
-} from "@react-navigation/native"
-import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
-import { observer } from "mobx-react-lite"
-import React from "react"
-import { useColorScheme } from "react-native"
-import * as Screens from "app/screens"
-import Config from "../config"
-import { useStores } from "../models"
-import { HomeNavigator, HomeTabParamList } from "./HomeNavigator"
-import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
-import { colors } from "app/theme"
-import { Button } from "app/components"
-
+} from '@react-navigation/native'
+import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack'
+import { observer } from 'mobx-react-lite'
+import React from 'react'
+import { useColorScheme } from 'react-native'
+import * as Screens from 'app/screens'
+import Config from '../config'
+import { useStores } from '../models'
+import { HomeNavigator, HomeTabParamList } from './HomeNavigator'
+import { navigationRef, useBackButtonHandler } from './navigationUtilities'
+import { colors } from 'app/theme'
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -39,7 +37,7 @@ import { Button } from "app/components"
 
 export type AppStackParamList = {
   Login: undefined
-  Home: NavigatorScreenParams<HomeTabParamList>,
+  Home: NavigatorScreenParams<HomeTabParamList>
 }
 
 /**
@@ -64,7 +62,7 @@ const AppStack = observer(function AppStack() {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false, navigationBarColor: colors.background }}
-      initialRouteName={isAuthenticated ? "Home" : "Login"} 
+      initialRouteName={isAuthenticated ? 'Home' : 'Login'}
     >
       {isAuthenticated ? (
         <>
@@ -79,8 +77,7 @@ const AppStack = observer(function AppStack() {
   )
 })
 
-export interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
+export type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>
 
 export const AppNavigator = observer(function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme()
@@ -90,7 +87,7 @@ export const AppNavigator = observer(function AppNavigator(props: NavigationProp
   return (
     <NavigationContainer
       ref={navigationRef}
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
       {...props}
     >
       <AppStack />

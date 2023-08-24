@@ -5,22 +5,12 @@
  * See the [Backend API Integration](https://github.com/infinitered/ignite/blob/master/docs/Backend-API-Integration.md)
  * documentation for more details.
  */
-import {
-  ApiResponse,
-  ApisauceInstance,
-  create,
-} from "apisauce"
-import Config from "../../config"
-import { GeneralApiProblem, getGeneralApiProblem } from "./apiProblem"
-import type {
-  ApiConfig,
-  Post,
-  AuthUser,
-  UserPosts
-} from "./api.types"
-import type { PostSnapshotIn } from "../../models/Post"
-import { AuthenticationStoreSnapshotIn } from "app/models/AuthenticationStore"
-
+import { ApiResponse, ApisauceInstance, create } from 'apisauce'
+import Config from '../../config'
+import { GeneralApiProblem, getGeneralApiProblem } from './apiProblem'
+import type { ApiConfig, Post, AuthUser, UserPosts } from './api.types'
+import type { PostSnapshotIn } from '../../models/Post'
+import { AuthenticationStoreSnapshotIn } from 'app/models/AuthenticationStore'
 
 /**
  * Configuring the apisauce instance.
@@ -47,17 +37,19 @@ export class Api {
       baseURL: this.config.url,
       timeout: this.config.timeout,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
     })
   }
 
-
-  async postLogin(email: string, password: string): Promise<{ kind: "ok"; authUser: AuthenticationStoreSnapshotIn } | GeneralApiProblem> {
+  async postLogin(
+    email: string,
+    password: string,
+  ): Promise<{ kind: 'ok'; authUser: AuthenticationStoreSnapshotIn } | GeneralApiProblem> {
     // make the api call
     const response: ApiResponse<AuthUser> = await this.apisauce.post('/auth/login', {
       email,
-      password
+      password,
     })
 
     // the typical ways to die when calling an api
@@ -74,20 +66,19 @@ export class Api {
         authEmail: rawData.user.email,
         authToken: rawData.tokens.access.token,
         name: rawData.user.name,
-        user: rawData.user
+        user: rawData.user,
       }
       console.log('authUser', authUser)
-      return { kind: "ok", authUser }
+      return { kind: 'ok', authUser }
     } catch (e) {
       if (__DEV__) {
         console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
       }
-      return { kind: "bad-data" }
+      return { kind: 'bad-data' }
     }
   }
 
-
-  async getPosts(): Promise<{ kind: "ok"; posts: PostSnapshotIn[] } | GeneralApiProblem> {
+  async getPosts(): Promise<{ kind: 'ok'; posts: PostSnapshotIn[] } | GeneralApiProblem> {
     // make the api call
     const response: ApiResponse<Post[]> = await this.apisauce.get('/posts')
 
@@ -108,19 +99,21 @@ export class Api {
         categories: raw.Categories,
         createdAt: raw.createdAt,
         createdBy: raw.createdBy,
-        reco: raw.reco || undefined
+        reco: raw.reco || undefined,
       }))
 
-      return { kind: "ok", posts }
+      return { kind: 'ok', posts }
     } catch (e) {
       if (__DEV__) {
         console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
       }
-      return { kind: "bad-data" }
+      return { kind: 'bad-data' }
     }
   }
 
-  async getMyPosts(userId: number): Promise<{ kind: "ok"; posts: PostSnapshotIn[] } | GeneralApiProblem> {
+  async getMyPosts(
+    userId: number,
+  ): Promise<{ kind: 'ok'; posts: PostSnapshotIn[] } | GeneralApiProblem> {
     // make the api call
     const response: ApiResponse<UserPosts> = await this.apisauce.get(`/users/${userId}/posts`)
 
@@ -137,12 +130,12 @@ export class Api {
       const posts: PostSnapshotIn[] = rawData.Post.map((raw) => ({
         ...raw,
       }))
-      return { kind: "ok", posts }
+      return { kind: 'ok', posts }
     } catch (e) {
       if (__DEV__) {
         console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
       }
-      return { kind: "bad-data" }
+      return { kind: 'bad-data' }
     }
   }
 }
